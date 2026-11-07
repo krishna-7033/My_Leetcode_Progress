@@ -1,0 +1,34 @@
+class Solution {
+public:
+    bool canPlace(const vector<int>& position, int m, int minDist) {
+        int ballsPlaced = 1;
+        int lastPos = position[0];
+
+        for (int i = 1; i < position.size(); ++i) {
+            if (position[i] - lastPos >= minDist) {
+                ballsPlaced++;
+                lastPos = position[i];
+                if (ballsPlaced == m) return true;
+            }
+        }
+        return false;
+    }
+
+    int maxDistance(vector<int>& position, int m) {
+        sort(position.begin(), position.end());
+        int low = 1;
+        int high = position.back() - position[0];
+        int ans = 0;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (canPlace(position, m, mid)) {
+                ans = mid;
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return ans;
+    }
+};
